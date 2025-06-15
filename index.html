@@ -36,7 +36,13 @@
 
         label {
             color: #dbe0e9;
-            white-space: pre;
+            display: flex;
+            align-items: center;
+        }
+
+        select {
+            font-size: 1em;
+            font-family: 'Lato', sans-serif;
         }
 
         input {
@@ -91,10 +97,11 @@
             text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.6);
         }
 
-        .player-submit-container {
+        .parameter-container {
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 1ch;
             height: 4em;
             font-size: 1.5em;
         }
@@ -107,6 +114,7 @@
             justify-content: space-around;
             align-items: center;
             column-gap: 50px;
+            row-gap: 20px;
         }
 
         .team-cards {
@@ -178,70 +186,44 @@
             <h1>SL CUSTOM MATCH RANDOMIZER</h1>
         </div>
 
-        <div class="player-submit-container">
-            <label for="name">Players: </label>
-            <input type="text" id="player-names" placeholder="enter comma separated names here">
-            <button onclick="randomizeEverything()">
-                <svg fill="#cfdfff" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="48">
-                    <path
-                        d="M196-305q-28-40-39.5-83.5T145-480q0-136 98.5-234.5T476-813h43l-69-70 45-45 160 160-160 160-46-45 69-69h-39q-99 0-171 72t-72 170q0 32 6.5 60.5T260-369l-64 64ZM464-29 304-189l160-162 45 47-70 69h43q98 1 170-71t72-172q0-31-6.5-59.5T699-589l65-64q27 43 39 86t12 89q0 137-98.5 236.5T485-143h-46l70 70-45 44Z" />
-                </svg>
-            </button>
+        <div class="parameter-container">
+            <label for="mode">
+                Mode:
+                <select id="mode">
+                    <option value="duel">Duel</option>
+                    <option value="duo">Duo</option>
+                    <option value="team">Team</option>
+                    <option value="battle-royale">Battle Royale</option>
+                </select>
+            </label>
+
+            <label for="player-names">
+                Players:
+                <input type="text" id="player-names" placeholder="enter comma separated names here">
+                <button onclick="randomizeEverything()">
+                    <svg fill="#cfdfff" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="48">
+                        <path
+                            d="M196-305q-28-40-39.5-83.5T145-480q0-136 98.5-234.5T476-813h43l-69-70 45-45 160 160-160 160-46-45 69-69h-39q-99 0-171 72t-72 170q0 32 6.5 60.5T260-369l-64 64ZM464-29 304-189l160-162 45 47-70 69h43q98 1 170-71t72-172q0-31-6.5-59.5T699-589l65-64q27 43 39 86t12 89q0 137-98.5 236.5T485-143h-46l70 70-45 44Z" />
+                    </svg>
+                </button>
+            </label>
         </div>
 
         <div class="all-teams">
-            <div class="team-cards" id="team-cards-0">
-                <div class="player-card" id="player-card-0" onclick="randomizeSelectPlayer(this)">
-                    <div class="legend-image-container">
-                        <img class="Maya">
-                    </div>
-                    <div class="player-name-container">
-                        <p class="player-name">utf16</p>
-                    </div>
+            <div class="player-card" id="player-card-template" style="display: none;"
+                onclick="randomizeSelectPlayer(this)">
+                <div class="legend-image-container">
+                    <img src="images/portrait/0.png">
                 </div>
-                <div class="player-card" id="player-card-1" onclick="randomizeSelectPlayer(this)">
-                    <div class="legend-image-container">
-                        <img class="Molly">
-                    </div>
-                    <div class="player-name-container">
-                        <p class="player-name">xanderp</p>
-                    </div>
-                </div>
-                <div class="player-card" id="player-card-2" onclick="randomizeSelectPlayer(this)">
-                    <div class="legend-image-container">
-                        <img class="Zeppetta">
-                    </div>
-                    <div class="player-name-container">
-                        <p class="player-name">heavenly</p>
-                    </div>
+                <div class="player-name-container">
+                    <p class="player-name">No Player</p>
                 </div>
             </div>
 
+            <div class="team-cards" id="team-cards-0">
+            </div>
+
             <div class="team-cards" id="team-cards-1">
-                <div class="player-card" id="player-card-3" onclick="randomizeSelectPlayer(this)">
-                    <div class="legend-image-container">
-                        <img class="Alice">
-                    </div>
-                    <div class="player-name-container">
-                        <p class="player-name">myuki</p>
-                    </div>
-                </div>
-                <div class="player-card" id="player-card-4" onclick="randomizeSelectPlayer(this)">
-                    <div class="legend-image-container">
-                        <img class="Red">
-                    </div>
-                    <div class="player-name-container">
-                        <p class="player-name">saturn</p>
-                    </div>
-                </div>
-                <div class="player-card" id="player-card-5" onclick="randomizeSelectPlayer(this)">
-                    <div class="legend-image-container">
-                        <img class="Rambert">
-                    </div>
-                    <div class="player-name-container">
-                        <p class="player-name">saitama</p>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -299,6 +281,8 @@
             "YongYong": "images/portrait/YongYong.png",
             "Zeppetta": "images/portrait/Zeppetta.png",
         };
+        const NO_PLAYER_PIC = "images/portrait/0.png";
+        const EE_PIC = "images/portrait/1.png";
 
         // Get a random number, inclusive on both ends.
         function getRandomInt(min, max) {
@@ -344,89 +328,129 @@
             return shuffled;
         }
 
-        function randomPick(array) {
+        function getRandomItem(array) {
             return array[getRandomInt(0, array.length - 1)]
+        }
+
+        function popRandomItem(array) {
+            const ix = getRandomInt(0, array.length - 1);
+            return array.splice(ix, 1);
         }
 
         function commaSeparatedTextToArray(text) {
             return text.split(",").map(e => e.trim()).filter(e => e.length != 0);
         }
 
-        function populateAllLegendPictures() {
-            for (let [name, pic] of Object.entries(LEGEND_PICS)) {
-                for (let elem of document.getElementsByClassName(name)) {
-                    elem.src = pic;
-                }
+        function setPlayerCardInfo(playerCardElement, name, legend = null) {
+            let legendUrl = "";
+            if (legend === null) {
+                legendUrl = NO_PLAYER_PIC;
+            } else if (legend in LEGEND_PICS) {
+                legendUrl = LEGEND_PICS[legend];
+            } else {
+                throw `Unknown character picture: ${legend}`;
             }
+
+            playerCardElement.querySelector(".player-name").textContent = name;
+            playerCardElement.querySelector("img").src = legendUrl;
         }
 
-        function randomizeEverything() {
-            let players = commaSeparatedTextToArray(
-                document.getElementById("player-names").value);
+        function populateTeamCardsBasedOnMode() {
+            const mode = document.getElementById("mode").value;
+            const teamCards0 = document.getElementById("team-cards-0");
+            const teamCards1 = document.getElementById("team-cards-1");
+            const playerCardTemplate = document.getElementById("player-card-template");
+            let playerPerTeam = 0;
 
-            // Unhide player-cards before we do anything.
-            for (let e of document.getElementsByClassName("player-card")) {
-                e.style.display = "block";
+            switch (mode) {
+                case "duel":
+                    playerPerTeam = 1;
+                    break;
+                case "duo":
+                    playerPerTeam = 2;
+                    break;
+                case "team":
+                    playerPerTeam = 3;
+                    break;
+                case "battle-royale":
+                    playerPerTeam = 4;
+                    break;
+                default:
+                    throw `Invalid mode: ${mode}`;
             }
 
-            players = shuffleArray(players);
-            let middleIx = Math.floor(players.length / 2);
-            const team0 = players.slice(0, middleIx);
-            const team1 = players.slice(middleIx);
+            for (const tc of [teamCards0, teamCards1]) {
+                if (tc.childElementCount === playerPerTeam) {
+                    continue;
+                }
 
-            let team0CardIds = ["player-card-0", "player-card-1", "player-card-2"];
-            for (let i = 0; i < team0CardIds.length; i++) {
-                let playerCardId = team0CardIds[i];
-                let playerName = team0[i];
+                tc.innerHTML = "";
+                for (let i = 0; i < playerPerTeam; i++) {
+                    const playerCard = playerCardTemplate.cloneNode(true);
+                    playerCard.removeAttribute("id");
+                    playerCard.style.display = "";
 
-                if (playerName != undefined) {
-                    let playerNameElement =
-                        document.querySelector(`#${playerCardId} .player-name`);
-                    playerNameElement.textContent = playerName;
-
-                    let legendPicElement =
-                        document.querySelector(`#${playerCardId} .legend-image-container`)
-                            .children[0];
-                    legendPicElement.className = randomPick(Object.keys(LEGEND_PICS));
-                } else {
-                    let playerCardElement = document.getElementById(playerCardId);
-                    playerCardElement.style.display = "none";
+                    tc.appendChild(playerCard);
                 }
             }
-
-            let team1CardIds = ["player-card-3", "player-card-4", "player-card-5"];
-            for (let i = 0; i < team1CardIds.length; i++) {
-                let playerCardId = team1CardIds[i];
-                let playerName = team1[i];
-
-                if (playerName != undefined) {
-                    let playerNameElement =
-                        document.querySelector(`#${playerCardId} .player-name`);
-                    playerNameElement.textContent = playerName;
-
-                    let legendPicElement =
-                        document.querySelector(`#${playerCardId} .legend-image-container`)
-                            .children[0];
-                    legendPicElement.className = randomPick(Object.keys(LEGEND_PICS));
-                } else {
-                    let playerCardElement = document.getElementById(playerCardId);
-                    playerCardElement.style.display = "none";
-                }
-            }
-
-            populateAllLegendPictures()
         }
 
         function randomizeSelectPlayer(playerCardElement) {
-            let playerCardId = playerCardElement.id;
-            let legendPicElement =
-                document.querySelector(`#${playerCardId} .legend-image-container`)
-                    .children[0];
-            legendPicElement.className = randomPick(Object.keys(LEGEND_PICS));
-            populateAllLegendPictures()
+            if (getRandomInt(1, 10) === 1) {
+                playerCardElement.querySelector("img").src = EE_PIC;
+                return;
+            }
+
+            const legend = getRandomItem(Object.keys(LEGEND_PICS));
+            setPlayerCardInfo(
+                playerCardElement,
+                playerCardElement.querySelector(".player-name").textContent,
+                legend,
+            );
         }
 
-        populateAllLegendPictures()
+        function randomizeEverything() {
+            const playerPool = commaSeparatedTextToArray(document.getElementById("player-names").value);
+            const mode = document.getElementById("mode").value;
+
+            populateTeamCardsBasedOnMode();
+
+            const team0PlayerCards = document.getElementById("team-cards-0").getElementsByClassName("player-card");
+            const team1PlayerCards = document.getElementById("team-cards-1").getElementsByClassName("player-card");
+            let maxPlayer = 0;
+            switch (mode) {
+                case "duel":
+                    maxPlayer = 2;
+                    break;
+                case "duo":
+                    maxPlayer = 4;
+                    break;
+                case "team":
+                    maxPlayer = 6;
+                    break;
+                case "battle-royale":
+                    maxPlayer = 8;
+                    break;
+                default:
+                    throw `Invalid mode: ${mode}`;
+            }
+            const targetPlayerCount = Math.min(maxPlayer, playerPool.length);
+            const team0Count = Math.round(targetPlayerCount / 2);
+            const team1Count = targetPlayerCount - team0Count;
+
+            for (let i = 0; i < team0Count; i++) {
+                const player = popRandomItem(playerPool);
+                const legend = getRandomItem(Object.keys(LEGEND_PICS));
+                setPlayerCardInfo(team0PlayerCards[i], player, legend);
+            }
+            for (let i = 0; i < team1Count; i++) {
+                const player = popRandomItem(playerPool);
+                const legend = getRandomItem(Object.keys(LEGEND_PICS));
+                setPlayerCardInfo(team1PlayerCards[i], player, legend);
+            }
+        }
+
+        populateTeamCardsBasedOnMode();
     </script>
 </body>
 
